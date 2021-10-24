@@ -13,4 +13,3 @@ class ConexionBD {
         return $conn;
     }
 }
-
