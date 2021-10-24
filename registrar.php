@@ -3,6 +3,7 @@ session_start();
 
 require 'modelos/ConexionBD.php';
 require 'modelos/Articulo.php';
+require 'modelos/ArticuloDAO.php';
 require 'modelos/Foto.php';
 require 'modelos/Usuario.php';
 require 'modelos/UsuarioDAO.php';

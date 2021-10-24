@@ -42,8 +42,8 @@ class Articulo {
         return $this->id_usuario;
     }
 
-    function getUsuario() {
-        return $this->usuario;
+    function getArticulo() {
+        return $this->articulo;
     }
 
     function getFotos() {
@@ -74,13 +74,14 @@ class Articulo {
         $this->id_usuario = $id_usuario;
     }
 
-    function setUsuario($usuario): void {
-        $this->usuario = $usuario;
+    function setArticulo($articulo): void {
+        $this->articulo = $articulo;
     }
 
     function setFotos($fotos): void {
         $this->fotos = $fotos;
     }
+
 
 
 

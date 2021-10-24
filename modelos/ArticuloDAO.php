@@ -29,29 +29,30 @@ class ArticuloDAO {
             return false;
         }
  
-    
         $titulo = $articulo->getTitulo();
         $descripcion = $articulo->getDescripcion();
         $precio = $articulo->getPrecio();
-        $sql = "INSERT INTO articulos (titulo, descripcion, precio) VALUES "
-                . "('$titulo','$descripcion','$precio')";
+        $id_usuario = $articulo->getId();
+        $sql = "INSERT INTO articulos (titulo, descripcion, precio, id_usuario) VALUES "
+                . "('$titulo','$descripcion','$precio','$id_usuario')";
         if (!$result = $this->conn->query($sql)) {
             die("Error en la SQL: " . $this->conn->error);
         }
+        // echo $sql; por si quiero ver la consulta
         $articulo->setId($this->conn->insert_id);
         return true;
     }
 
-    public function update($articulos) {
+    public function update($articulo) {
         //Comprobamos que el parámetro no es nulo y es de la clase Usuario
-        if (!$articulos instanceof Articulo) {
+        if (!$articulo instanceof Articulo) {
             return false;
         }
+        $id= $articulo->getId();
         $titulo = $articulo->getTitulo();
         $descripcion = $articulo->getDescripcion();
         $precio = $articulo->getPrecio();
-        $sql = "INSERT INTO articulos (titulo, descripcion, precio) VALUES "
-                . "('$titulo','$descripcion','$precio')";
+        $sql = "UPDATE articulos SET titulo=" . "('$titulo')" . " , descripcion="."('$descripcion')".", precio="."('$precio')" . " WHERE id="."('$id')";
         if (!$result = $this->conn->query($sql)) {
             die("Error en la SQL: " . $this->conn->error);
         }
@@ -68,9 +69,6 @@ class ArticuloDAO {
      * @return type
      */
     public function delete($articulos) {
-        if ($articulos == null || get_class($articulos) != 'Usuario') {
-            return false;
-        }
         $sql = "DELETE FROM articulos WHERE id = " . $articulos->getId();
         if (!$result = $this->conn->query($sql)) {
             die("Error en la SQL: " . $this->conn->error);
@@ -88,12 +86,12 @@ class ArticuloDAO {
      * @return \Usuario Usuario de la BD o null si no existe
      */
     public function find($id) { //: Usuario especifica el tipo de datos que va a devolver pero no es obligatorio ponerlo
-        $sql = "SELECT * FROM articulos WHERE id=$id";
+        $sql = "SELECT * FROM articulos WHERE id='$id'";
         if (!$result = $this->conn->query($sql)) {
             die("Error en la SQL: " . $this->conn->error);
         }
-        return $result->fetch_object('Articulo');
-        /* También se podría sustituir el fetch_object por lo siguiente:
+        return $result->fetch_object('Articulo');//esto solo lo puedo usar si todos los campos se llaman exactamente igual
+        /* Sino se llaman igual los campos, deberiamos cambiar el fetch_object por lo siguiente:
          * 
          * if ($fila = $result->fetch_assoc()) {
           $usuario = new Usuario();
@@ -117,11 +115,12 @@ class ArticuloDAO {
      */
     public function findAll($orden = 'ASC', $campo = 'id') {
         $sql = "SELECT * FROM articulos ORDER BY $campo $orden";
+        //echo $sql;
         if (!$result = $this->conn->query($sql)) {
             die("Error en la SQL: " . $this->conn->error);
         }
         $array_obj_articulos = array();
-        while ($usuario = $result->fetch_object('Articulo')) {
+        while ($articulo = $result->fetch_array(MYSQLI_ASSOC)) {
             $array_obj_articulos[] = $articulo;
         }
         return $array_obj_articulos;
