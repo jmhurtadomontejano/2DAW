@@ -77,7 +77,7 @@ require 'modelos/Session.php';
                 padding: 5px;
             }
             .tablaArticulos{
-                display: flex;
+                display: inline-block; 
                 border: 1px solid red;
                 font-size: 1em;
                 border-bottom: 1px solid orange;
